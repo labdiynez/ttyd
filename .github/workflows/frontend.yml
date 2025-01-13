@@ -34,7 +34,7 @@ jobs:
           mkdir -p unraid-dist
           cp ../src/html.h unraid-dist/
       - name: Publish HTML.h to Cloudflare R2
-      - uses: jakejarvis/s3-sync-action@master
+        uses: jakejarvis/s3-sync-action@master
         if: ${{ github.ref === 'refs/heads/feat/ttyd-close-on-disconnection' }}
         env:
           AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
