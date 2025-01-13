@@ -5,6 +5,8 @@ on:
     paths:
     - ".github/workflows/frontend.yml"
     - "html/*"
+    branches:
+      - "feat/ttyd-close-on-disconnection"
   pull_request:
     paths:
     - ".github/workflows/frontend.yml"
@@ -26,3 +28,18 @@ jobs:
           yarn run check
           yarn run build
         working-directory: html
+      - name: Copy HTML.h to new directory
+        if: ${{ github.ref === 'refs/heads/feat/ttyd-close-on-disconnection' }}
+        run: |
+          mkdir -p unraid-dist
+          cp ../src/html.h unraid-dist/
+      - name: Publish HTML.h to Cloudflare R2
+      - uses: jakejarvis/s3-sync-action@master
+        if: ${{ github.ref === 'refs/heads/feat/ttyd-close-on-disconnection' }}
+        env:
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+          AWS_S3_ENDPOINT: ${{ secrets.AWS_S3_ENDPOINT }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          SOURCE_DIR: 'unraid-dist'
+          DEST_DIR: 'libs/ttyd/src/'
