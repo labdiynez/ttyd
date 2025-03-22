@@ -153,7 +153,7 @@ export class Xterm {
 
     @bind
     public open(parent: HTMLElement) {
-        this.terminal.options.fontFamily = 'MesloLGS';
+        this.terminal = new Terminal(this.options.termOptions);
         const { terminal, fitAddon, overlayAddon, clipboardAddon, webLinksAddon } = this;
         window.term = terminal as TtydTerminal;
         window.term.fit = () => {
