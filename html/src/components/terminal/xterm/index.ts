@@ -462,7 +462,12 @@ export class Xterm {
                     } else {
                         terminal.options[key] = value;
                     }
-                    if (key.indexOf('font') === 0) fitAddon.fit();
+                    if (key.indexOf('font') === 0) {
+                       setTimeout(() => {
+                           terminal.resize(Math.max(0, terminal.cols - 1), terminal.rows);
+                       }, 100);
+                        fitAddon.fit();
+                    }
                     break;
             }
         }
